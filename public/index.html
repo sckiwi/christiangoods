@@ -6,6 +6,15 @@
 <body ng-controller="main" ng-cloak>
   <h1>Christian Goods</h1>
 
+  <div ng-repeat="product in products | orderBy:'name'">
+    name: {{product.name}} <br>
+    <img ng-src="{{product.imageUrl}}"/>
+  </div>
+
+
+
+  <!-- Load Libraries at the End of the pgae, for performance -->
+
   <!-- Angular.js Libraries -->
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
