@@ -1,0 +1,29 @@
+.product {
+  width: 300px;
+  border: solid 1px gray;
+  margin: 15px auto;
+}
+
+.product-image {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.productName {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  width: 250px;
+  margin: 0 auto;
+}
+
+.likes {
+  width: 100px;
+  margin: 15px auto;
+  text-align: center;
+  display: block;
+}

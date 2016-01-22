@@ -1,14 +1,18 @@
 <html lang="en" ng-app="christiangoods" >
 <head>
+  <!-- ChristianGoods style sheet -->
+  <link rel="stylesheet" href="christiangoods.css">
   <!-- Angular Material style sheet -->
   <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 </head>
 <body ng-controller="main" ng-cloak>
   <h1>Christian Goods</h1>
 
-  <div ng-repeat="product in products | orderBy:'name'">
-    name: {{product.name}} <br>
-    <img ng-src="{{product.imageUrl}}"/>
+  <div class="product" ng-repeat="product in products | orderBy:'name'">
+    <div class='product-image' ng-style="getProductImageStyle(product)"></div>
+    <div class="productName">{{product.name}}</div>
+    <button ng-click="likeButtonClicked(product)" class="likes">{{(mikeLikesIt(product))?'I Like This':'Add To My Likes'}}</button>
+    <!-- <div class="likes">likes: {{likesCount(product)}}</div> -->
   </div>
 
   <!-- Load Libraries at the End of the pgae, for performance -->
