@@ -1,18 +1,21 @@
 'use strict';
 
+var FIREBASE_BASE_URL = "https://christiangoods.firebaseio.com";
+
 var app = angular.module('christiangoods', ['firebase','ngMaterial']);
 
-app.controller('main', function($scope, $firebaseObject) {
+app.controller('main', function($scope, $firebaseObject, $firebaseArray) {
 
   $scope.shopperEmail = "spencergclark@gmail.com";
   $scope.products = {};
 
-  var firebaseRef = new Firebase("https://christiangoods.firebaseio.com/products");
-  var firebaseObj = $firebaseObject(firebaseRef);
-  firebaseObj.$bindTo($scope, "products").then(function(){
-    // run code after the products come back from Firebase
-    // Nothing to do right now
-  });
+  var firebaseRef = new Firebase(FIREBASE_BASE_URL + "/products");
+  var firebaseArray = $firebaseArray(firebaseRef);
+  $scope.products = firebaseArray;
+  // firebaseArray.$bindTo($scope, "products").then(function(){
+  //   // run code after the products come back from Firebase
+  //   // Nothing to do right now
+  // });
 
   $scope.likesCount = function(product) {
     return (product.likes)?Object.keys(product.likes).length:0;
@@ -36,13 +39,30 @@ app.controller('main', function($scope, $firebaseObject) {
     return false;
   }
 
+  $scope.addLike = function(product) {
+    var likesArray = $firebaseArray(firebaseRef.child(firebaseArray.$keyAt(product) + '/likes'));
+    likesArray.$loaded().then(function() {
+      likesArray.$add($scope.shopperEmail);  
+    });
+  }
+
+  $scope.removeLike = function(product) {
+    var likesArray = $firebaseArray(firebaseRef.child(firebaseArray.$keyAt(product) + '/likes'));
+    likesArray.$loaded().then(function() {
+      for (var i = 0; i<likesArray.length; i++) {
+        var j = likesArray.$getRecord(likesArray.$keyAt(i));
+        if (j.$value == $scope.shopperEmail) {
+          likesArray.$remove(j);
+        }
+      }
+    });
+  }
+
   $scope.likeButtonClicked = function(product) {
-    if ($scope.mikeLikesIt(product)) {
-      // Remove $scope.shopperEmail from the likes Object
-      alert('TODO: we sshill need to remove this like');
+    if (!$scope.mikeLikesIt(product)) {
+      $scope.addLike(product);
     } else {
-      // Add $scope.shopperEmail to the likes Object
-      alert('TODO: We still need to add this like');
+      $scope.removeLike(product);
     }
   }
 
